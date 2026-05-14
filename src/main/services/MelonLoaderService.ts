@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as https from 'https'
 import { EventEmitter } from 'events'
-import AdmZip from 'adm-zip'
+import extract from 'extract-zip'
 
 const ML_FILES = [
   'MelonLoader/',
@@ -19,7 +19,7 @@ export class MelonLoaderService extends EventEmitter {
   async download(gamePath: string): Promise<void> {
     const releaseInfo = await this.fetchLatestRelease()
     const zipUrl = releaseInfo.assets.find((a: any) =>
-      a.name.endsWith('.zip') && a.name.includes('MelonLoader')
+      a.name === 'MelonLoader.x64.zip'
     )?.browser_download_url
 
     if (!zipUrl) throw new Error('No MelonLoader release zip found')
@@ -33,8 +33,7 @@ export class MelonLoaderService extends EventEmitter {
       await this.download(gamePath)
     }
 
-    const zip = new AdmZip(this.downloadPath)
-    zip.extractAllTo(gamePath, true)
+    await extract(this.downloadPath, { dir: path.resolve(gamePath) })
 
     if (fs.existsSync(this.downloadPath)) {
       fs.unlinkSync(this.downloadPath)
@@ -90,34 +89,46 @@ export class MelonLoaderService extends EventEmitter {
 
   private downloadFile(url: string, dest: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(dest)
-      let receivedBytes = 0
-      let totalBytes = 0
+      const download = (targetUrl: string) => {
+        const file = fs.createWriteStream(dest)
+        let receivedBytes = 0
+        let totalBytes = 0
 
-      https.get(url, { headers: { 'User-Agent': 'adofai-mod-manager' } }, (res) => {
-        totalBytes = parseInt(res.headers['content-length'] || '0', 10)
-
-        res.on('data', (chunk) => {
-          receivedBytes += chunk.length
-          file.write(chunk)
-          if (totalBytes > 0) {
-            this.emit('download-progress', {
-              received: receivedBytes,
-              total: totalBytes,
-              percentage: Math.round((receivedBytes / totalBytes) * 100)
-            })
+        https.get(targetUrl, { headers: { 'User-Agent': 'adofai-mod-manager' } }, (res) => {
+          // Follow redirects manually (GitHub releases redirect to CDN)
+          if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+            res.destroy()
+            file.close()
+            download(res.headers.location)
+            return
           }
-        })
 
-        res.on('end', () => {
-          file.end()
-          resolve()
+          totalBytes = parseInt(res.headers['content-length'] || '0', 10)
+
+          res.on('data', (chunk) => {
+            receivedBytes += chunk.length
+            file.write(chunk)
+            if (totalBytes > 0) {
+              this.emit('download-progress', {
+                received: receivedBytes,
+                total: totalBytes,
+                percentage: Math.round((receivedBytes / totalBytes) * 100)
+              })
+            }
+          })
+
+          res.on('end', () => {
+            file.end()
+            resolve()
+          })
+        }).on('error', (err) => {
+          file.close()
+          try { fs.unlinkSync(dest) } catch {}
+          reject(err)
         })
-      }).on('error', (err) => {
-        file.close()
-        fs.unlinkSync(dest)
-        reject(err)
-      })
+      }
+
+      download(url)
     })
   }
 }

@@ -31,8 +31,8 @@
     }
   },
   "dependencies": {
-    "adm-zip": "^0.5.16",
-    "electron-store": "^8.2.0"
+    "electron-store": "^8.2.0",
+    "extract-zip": "^2.0.1"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
