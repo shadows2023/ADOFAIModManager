@@ -6,21 +6,44 @@
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
+    "postbuild": "electron-builder",
     "preview": "electron-vite preview"
+  },
+  "build": {
+    "appId": "com.adofai.modmanager",
+    "productName": "ADOFAI Mod Manager",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
   },
   "dependencies": {
     "adm-zip": "^0.5.16",
     "electron-store": "^8.2.0"
   },
   "devDependencies": {
-    "electron": "^33.0.0",
-    "electron-vite": "^2.3.0",
+    "@types/adm-zip": "^0.5.5",
+    "@types/node": "^22.0.0",
     "@vitejs/plugin-vue": "^5.1.0",
-    "vue": "^3.5.0",
+    "electron": "^33.0.0",
+    "electron-builder": "^26.8.1",
+    "electron-vite": "^2.3.0",
     "pinia": "^2.2.0",
     "typescript": "^5.6.0",
-    "vue-tsc": "^2.1.0",
-    "@types/adm-zip": "^0.5.5",
-    "@types/node": "^22.0.0"
+    "vue": "^3.5.0",
+    "vue-tsc": "^2.1.0"
   }
 }
