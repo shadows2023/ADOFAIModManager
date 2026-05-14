@@ -1,0 +1,26 @@
+{
+  "name": "adofai-mod-manager",
+  "version": "1.0.0",
+  "description": "ADOFAI MelonLoader Mod Manager",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-vite": "^2.3.0",
+    "@vitejs/plugin-vue": "^5.1.0",
+    "vue": "^3.5.0",
+    "pinia": "^2.2.0",
+    "typescript": "^5.6.0",
+    "vue-tsc": "^2.1.0",
+    "@types/adm-zip": "^0.5.5",
+    "@types/node": "^22.0.0"
+  }
+}
