@@ -20,9 +20,9 @@
     ],
     "win": {
       "target": [
-        "nsis"
+        "portable"
       ],
-      "icon": null
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,

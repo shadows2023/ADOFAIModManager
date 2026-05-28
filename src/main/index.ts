@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, shell, dialog, Menu } from 'electron'
 import { join } from 'path'
 import { GameService } from './services/GameService'
 import { MelonLoaderService } from './services/MelonLoaderService'
@@ -16,6 +16,14 @@ function createWindow(): void {
     minWidth: 800,
     minHeight: 600,
     title: 'ADOFAI Mod Manager',
+    autoHideMenuBar: true,
+    backgroundColor: '#0B1121',
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#0B1121',
+      symbolColor: '#94A3B8',
+      height: 36
+    },
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
@@ -109,6 +117,7 @@ function registerIpcHandlers(): void {
 }
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null)
   registerIpcHandlers()
   createWindow()
 

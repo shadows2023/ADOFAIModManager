@@ -1,9 +1,19 @@
 <template>
   <div class="progress-container" v-if="progress">
-    <div class="progress-bar">
-      <div class="progress-fill" :style="{ width: progress.percentage + '%' }"></div>
+    <div class="progress-header">
+      <span class="progress-label">Downloading MelonLoader</span>
+      <span class="progress-pct">{{ progress.percentage }}%</span>
     </div>
-    <span class="progress-text">{{ progress.percentage }}%</span>
+    <div class="progress-track">
+      <div
+        class="progress-fill"
+        :style="{ width: progress.percentage + '%' }"
+      ></div>
+      <div
+        class="progress-glow"
+        :style="{ left: progress.percentage + '%' }"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -15,31 +25,53 @@ defineProps<{
 
 <style scoped>
 .progress-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
-.progress-bar {
-  flex: 1;
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.progress-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.progress-track {
+  position: relative;
   height: 6px;
   background: var(--bg-card);
-  border-radius: 3px;
-  overflow: hidden;
+  border-radius: 6px;
+  overflow: visible;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--accent);
-  border-radius: 3px;
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, var(--accent), #34D399);
+  border-radius: 6px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
-.progress-text {
-  font-size: 12px;
-  color: var(--text-secondary);
-  min-width: 40px;
-  text-align: right;
+.progress-glow {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 20px;
+  background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>
