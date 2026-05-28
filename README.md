@@ -1,59 +1,53 @@
 # ADOFAI Mod Manager
 
-基于 Electron + Vue 3 的 MelonLoader Mod 管理器，专为游戏 **A Dance of Fire and Ice** 设计。
+[中文](README.zh-CN.md)
 
-## 功能
+An Electron + Vue 3 based MelonLoader mod manager for **A Dance of Fire and Ice**.
 
-- **游戏路径配置** — 选择 ADOFAI 游戏目录，自动验证
-- **MelonLoader 管理** — 一键下载安装/卸载 MelonLoader
-- **Mod 管理** — 本地 .dll 文件安装、卸载、启用/禁用开关、搜索
-- **在线 Mod 源** — 预留扩展接口，后续可接入在线 Mod 源
+### Features
 
-## 截图
+- **Game path setup** - Select and validate the ADOFAI directory
+- **MelonLoader management** - Install or uninstall MelonLoader with one click
+- **Mod management** - Install local .dll mods, uninstall, enable/disable, and search
+- **Online sources (planned)** - Extensible adapter for future online mod sources
+
+### Screenshots
 
 <!-- TODO: add screenshots -->
 
-## 快速开始
+### Usage
+
+
+### Development
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 开发模式
+# Dev mode
 npm run dev
 
-# 构建生产版本
+# Build production bundles
 npm run build
 
-# 打包为 exe 安装包（先运行 npm run build）
+# Package exe (run npm run build first)
 npx electron-builder
 ```
 
-## 项目结构
+### Project Structure
 
 ```
 src/
-├── main/                # Electron 主进程
-│   ├── index.ts         # 入口 + IPC 处理
-│   └── services/        # 核心服务层
+├── main/                # Electron main process
+│   ├── index.ts         # Entry + IPC handlers
+│   └── services/        # Core services
 │       ├── GameService.ts
 │       ├── MelonLoaderService.ts
 │       ├── ModService.ts
-│       └── sources/     # 在线源扩展接口
-├── preload/             # preload 脚本
-└── renderer/            # Vue 3 前端
-    ├── stores/          # Pinia 状态管理
-    ├── components/      # 公共组件
-    └── views/           # 页面视图
+│       └── sources/     # Online source adapters
+├── preload/             # Preload scripts
+└── renderer/            # Vue 3 frontend
+    ├── stores/          # Pinia stores
+    ├── components/      # Shared components
+    └── views/           # Pages
 ```
-
-## 技术栈
-
-- Electron + electron-vite
-- Vue 3 + TypeScript
-- Pinia
-- electron-builder
-
-## License
-
-MIT
