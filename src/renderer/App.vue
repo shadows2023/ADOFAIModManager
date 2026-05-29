@@ -1,4 +1,5 @@
 <template>
+  <div class="drag-region"></div>
   <div class="app-layout">
     <Sidebar :currentView="currentView" @navigate="currentView = $event" />
     <main class="main-content">
@@ -20,6 +21,16 @@ const currentView = ref<'setup' | 'mods' | 'about'>('setup')
 </script>
 
 <style scoped>
+.drag-region {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  -webkit-app-region: drag;
+  z-index: 1000;
+}
+
 .app-layout {
   display: flex;
   height: 100vh;
